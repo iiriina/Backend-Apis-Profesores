@@ -36,17 +36,21 @@ exports.getUsersByMail = async function (req, res, next) {
     }
 }
 
-exports.createUser = async function (req, res, next) {
+exports.crearUsuario = async function (req, res, next) {
     // Req.Body contains the form submit values.
     console.log("llegue al controller",req.body)
     var User = {
-        name: req.body.name,
+        nombre: req.body.nombre,
         email: req.body.email,
-        password: req.body.password
+        contrasenia: req.body.contrasenia,
+        telefono: req.body.telefono,
+        titulo: req.body.titulo,
+        experiencia: req.body.experiencia,
+        foto: req.body.foto    
     }
     try {
         // Calling the Service function with the new object from the Request Body
-        var createdUser = await UserService.createUser(User)
+        var createdUser = await UserService.crearUsuario(User)
         return res.status(201).json({createdUser, message: "Succesfully Created User"})
     } catch (e) {
         //Return an Error Response Message with Code and the Error Message.

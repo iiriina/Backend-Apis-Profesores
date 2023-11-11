@@ -28,15 +28,18 @@ exports.getUsers = async function (query, page, limit) {
     }
 }
 
-exports.createUser = async function (user) {
+exports.crearUsuario = async function (user) {
     // Creating a new Mongoose Object by using the new keyword
-    var hashedPassword = bcrypt.hashSync(user.password, 8);
+    var hashedPassword = bcrypt.hashSync(user.contrasenia, 8);
     
     var newUser = new User({
-        name: user.name,
+        nombre: user.nombre,
         email: user.email,
-        date: new Date(),
-        password: hashedPassword
+        contrasenia: hashedPassword,
+        telefono: user.telefono,
+        titulo: user.titulo,
+        experiencia: user.experiencia,
+        foto: user.foto
     })
 
     try {
