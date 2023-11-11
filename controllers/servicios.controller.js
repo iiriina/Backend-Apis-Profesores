@@ -46,7 +46,7 @@ exports.cambiarVisibilidadServicio = async function (req, res, next) {
 
     // Id is necessary for the update
     if (!req.body._id) {
-        return res.status(400).json({status: 400., message: "Necesitas enviar el id del Servicio a Borrar"})
+        return res.status(400).json({status: 400., message: "Necesitas enviar el id del Servicio a Modificar"})
     }
 
     var Servicio = {
@@ -72,5 +72,20 @@ exports.getServicios = async function (req, res, next) {
     } catch (e) {
         //Return an Error Response Message with Code and the Error Message.
         return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
+exports.modificarServicio = async function (req, res, next) {
+
+    // Id is necessary for the update
+    if (!req.body._id) {
+        return res.status(400).json({status: 400., message: "Necesitas enviar el id del Servicio a Modificar"})
+    }
+
+    try {
+        var updatedServicio = await ServicioService.modificarServicio(req.body)
+        return res.status(200).json({status: 200, data: updatedServicio, message: "Succesfully Updated Servicio"})
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
     }
 }

@@ -13,6 +13,7 @@ router.post('/crearServicio', Authorization, ServicioController.crearServicio)
 router.delete('/eliminarServicio', Authorization, ServicioController.eliminarServicio)
 router.put('/cambiarVisibilidad', Authorization, ServicioController.cambiarVisibilidadServicio)
 router.get('/servicios',Authorization, ServicioController.getServicios)
+router.put('/modificarServicio',Authorization, ServicioController.modificarServicio)
 
 
 

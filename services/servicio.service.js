@@ -114,3 +114,33 @@ exports.getServicios = async function (query) {
         throw Error('Error while retrieving servicios');
     }
 }
+
+
+exports.modificarServicio = async function (servicio) {
+    // Asegurarme de que sea un ObjectId
+    const servicioId = mongoose.Types.ObjectId(servicio._id);
+
+    try {
+        // Buscar el servicio existente por su ID
+        var oldServicio = await Servicio.findOne({ _id: servicioId });
+
+        // Si no se encuentra el servicio, retorna false o maneja el caso según tus necesidades
+        if (!oldServicio) {
+            return false;
+        }
+
+        // Iterar sobre las propiedades proporcionadas en el cuerpo de la solicitud
+        Object.keys(servicio).forEach((prop) => {
+            // Verificar si la propiedad existe en el servicio y no es "_id" ni null
+            if (oldServicio[prop] !== undefined && oldServicio[prop] !== null && prop !== "_id") {
+                oldServicio[prop] = servicio[prop];
+            }
+        });
+
+        // Guardar el servicio modificado
+        var savedServicio = await oldServicio.save();
+        return savedServicio;
+    } catch (e) {
+        throw Error("Error al modificar el Servicio: " + e.message);
+    }
+}
