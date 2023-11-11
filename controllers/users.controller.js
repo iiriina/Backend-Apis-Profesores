@@ -52,10 +52,13 @@ exports.crearUsuario = async function (req, res, next) {
         // Calling the Service function with the new object from the Request Body
         var createdUser = await UserService.crearUsuario(User)
         return res.status(201).json({createdUser, message: "Succesfully Created User"})
-    } catch (e) {
-        //Return an Error Response Message with Code and the Error Message.
-        console.log(e)
-        return res.status(400).json({status: 400, message: "User Creation was Unsuccesfull"})
+    } catch (error) {
+        if (error.message === 'Correo electrónico ya está en uso') {
+            return res.status(400).json({ status: 400, message: "El correo electrónico ya está en uso" });
+        } else {
+            console.error(error);
+            return res.status(400).json({ status: 400, message: "Error al crear el usuario" });
+        }
     }
 }
 

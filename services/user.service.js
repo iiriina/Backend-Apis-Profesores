@@ -29,6 +29,13 @@ exports.getUsers = async function (query, page, limit) {
 }
 
 exports.crearUsuario = async function (user) {
+
+    // Validar si el correo electrónico ya está en uso
+    const existingUser = await User.findOne({ email: user.email });
+    if (existingUser) {
+        throw new Error('Correo electrónico ya está en uso');
+    }    
+    
     // Creating a new Mongoose Object by using the new keyword
     var hashedPassword = bcrypt.hashSync(user.contrasenia, 8);
     
