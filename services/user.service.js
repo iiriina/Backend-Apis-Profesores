@@ -110,7 +110,7 @@ exports.deleteUser = async function (id) {
 }
 
 
-exports.loginUser = async function (user) {
+exports.loginUsuario = async function (user) {
 
     // Creating a new Mongoose Object by using the new keyword
     try {
@@ -119,7 +119,7 @@ exports.loginUser = async function (user) {
         var _details = await User.findOne({
             email: user.email
         });
-        var passwordIsValid = bcrypt.compareSync(user.password, _details.password);
+        var passwordIsValid = bcrypt.compareSync(user.contrasenia, _details.contrasenia);
         if (!passwordIsValid) return 0;
 
         var token = jwt.sign({

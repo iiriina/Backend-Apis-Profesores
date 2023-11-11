@@ -97,16 +97,16 @@ exports.removeUser = async function (req, res, next) {
 }
 
 
-exports.loginUser = async function (req, res, next) {
+exports.loginUsuario = async function (req, res, next) {
     // Req.Body contains the form submit values.
     console.log("body",req.body)
     var User = {
         email: req.body.email,
-        password: req.body.password
+        contrasenia: req.body.contrasenia
     }
     try {
         // Calling the Service function with the new object from the Request Body
-        var loginUser = await UserService.loginUser(User);
+        var loginUser = await UserService.loginUsuario(User);
         if (loginUser===0)
             return res.status(400).json({message: "Error en la contraseña"})
         else
