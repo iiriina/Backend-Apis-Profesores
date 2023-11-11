@@ -62,3 +62,15 @@ exports.cambiarVisibilidadServicio = async function (req, res, next) {
     }
 }
 
+exports.getServicios = async function (req, res, next) {
+    //ahi adentro de la request me van a llegar los parametros que quiero cambiar basicamente
+    let filtro= req.body
+    try {
+        var Servicios = await ServicioService.getServicios(filtro)
+        // Return the Users list with the appropriate HTTP password Code and Message.
+        return res.status(200).json({status: 200, data: Servicios, message: "Succesfully Servicios Recieved"});
+    } catch (e) {
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}

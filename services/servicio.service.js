@@ -97,3 +97,20 @@ exports.cambiarVisibilidadServicio = async function (servicio) {
         throw Error("And Error occured while updating the Visibilidad del Servicio");
     }
 }
+
+exports.getServicios = async function (query) {
+
+    try {
+        console.log("Query", query);
+
+        // Find servicios based on the query
+        const servicios = await Servicio.find(query);
+        console.log("los servicios que hay son" + servicios)
+        // Return the users
+        return servicios;
+    } catch (e) {
+        // return an Error message describing the reason
+        console.error("Error in services", e);
+        throw Error('Error while retrieving servicios');
+    }
+}
