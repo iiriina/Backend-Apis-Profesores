@@ -11,6 +11,7 @@ router.get('/', function(req, res, next) {
   });
 router.post('/crearServicio', Authorization, ServicioController.crearServicio)
 router.delete('/eliminarServicio', Authorization, ServicioController.eliminarServicio)
+router.put('/cambiarVisibilidad', Authorization, ServicioController.cambiarVisibilidadServicio)
 
 
 

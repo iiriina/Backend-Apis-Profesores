@@ -41,3 +41,24 @@ exports.eliminarServicio = async function (req, res, next) {
         return res.status(400).json({status: 400, message: e.message})
     }
 }
+
+exports.cambiarVisibilidadServicio = async function (req, res, next) {
+
+    // Id is necessary for the update
+    if (!req.body._id) {
+        return res.status(400).json({status: 400., message: "Necesitas enviar el id del Servicio a Borrar"})
+    }
+
+    var Servicio = {
+        _id: req.body._id,
+        visibilidad: req.body.visibilidad
+    }
+
+    try {
+        var updatedServicio = await ServicioService.cambiarVisibilidadServicio(Servicio)
+        return res.status(200).json({status: 200, data: updatedServicio, message: "Succesfully Updated Servicio"})
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
+    }
+}
+

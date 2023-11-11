@@ -69,3 +69,31 @@ exports.deleteServicio = async function (id) {
         throw Error("Error Occured while Deleting the Servicio")
     }
 }
+
+exports.cambiarVisibilidadServicio = async function (servicio) {
+    
+    // Asegurarme de que sea un ObjectId
+    const userId = mongoose.Types.ObjectId(servicio._id);
+
+    var id = {_id :servicio._id}
+    console.log(id)
+    try {
+        //Find the old Servicio Object by the Id
+        var oldServicio = await Servicio.findOne(id);
+        console.log (oldServicio)
+    } catch (e) {
+        throw Error("Error occured while Finding the Servicio")
+    }
+    // If no old Servicio Object exists return false
+    if (!oldServicio) {
+        return false;
+    }
+    //Edit the User Object
+    oldServicio.visibilidad = servicio.visibilidad
+    try {
+        var savedServicio = await oldServicio.save()
+        return savedServicio;
+    } catch (e) {
+        throw Error("And Error occured while updating the Visibilidad del Servicio");
+    }
+}
