@@ -18,6 +18,7 @@ var ServicioSchema = new mongoose.Schema({
     precio: Number,
     categoria: String,
     tipo_de_clase: String,
+    visibilidad: String, //para decir si es visible o no el servicio
     comentarios: [Comentario.schema]  // Indica que comentarios es un array de objetos de comentario
 })
 

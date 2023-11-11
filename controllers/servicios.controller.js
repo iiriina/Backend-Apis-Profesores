@@ -18,6 +18,7 @@ exports.crearServicio = async function (req, res, next) {
         precio: req.body.precio,
         categoria: req.body.categoria,
         tipo_de_clase: req.body.tipo_de_clase,
+        visibilidad: req.body.visibilidad,
         comentarios: []
     }
     try {

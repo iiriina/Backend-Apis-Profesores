@@ -38,6 +38,7 @@ exports.crearServicio = async function (servicio) {
         precio: servicio.precio,
         categoria: servicio.categoria,
         tipo_de_clase: servicio.tipo_de_clase,
+        visibilidad: servicio.visibilidad,
         comentarios: []  // Indica que comentarios es un array de objetos de comentario
     })
 
