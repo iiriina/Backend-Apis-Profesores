@@ -53,3 +53,19 @@ exports.crearServicio = async function (servicio) {
         throw Error("Error while Creating Servicio")
     }
 }
+
+exports.deleteServicio = async function (id) {
+    console.log(id)
+    // Delete the Servicio
+    try {
+        var deleted = await Servicio.remove({
+            _id: id
+        })
+        if (deleted.n === 0 && deleted.ok === 1) {
+            throw Error("Servicio Could not be deleted")
+        }
+        return deleted;
+    } catch (e) {
+        throw Error("Error Occured while Deleting the Servicio")
+    }
+}

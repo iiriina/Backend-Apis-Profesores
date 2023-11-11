@@ -30,3 +30,14 @@ exports.crearServicio = async function (req, res, next) {
         return res.status(400).json({ status: 400, message: "Error al crear el Servicio" });
     }
 }
+
+exports.eliminarServicio = async function (req, res, next) {
+
+    var id = req.body.id;
+    try {
+        var deleted = await ServicioService.deleteServicio(id);
+        res.status(200).send("Succesfully Deleted... ");
+    } catch (e) {
+        return res.status(400).json({status: 400, message: e.message})
+    }
+}

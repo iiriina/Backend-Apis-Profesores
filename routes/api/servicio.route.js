@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
     res.send('Llegaste a la ruta de  api/servicio.routes');
   });
 router.post('/crearServicio', Authorization, ServicioController.crearServicio)
+router.delete('/eliminarServicio', Authorization, ServicioController.eliminarServicio)
 
 
 
