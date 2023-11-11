@@ -9,7 +9,7 @@ var Authorization = require('../../auth/authorization');
 router.get('/', function(req, res, next) {
     res.send('Llegaste a la ruta de  api/servicio.routes');
   });
-router.post('/crearServicio', ServicioController.crearServicio)
+router.post('/crearServicio', Authorization, ServicioController.crearServicio)
 
 
 
