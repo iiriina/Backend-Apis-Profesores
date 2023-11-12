@@ -11,6 +11,8 @@ router.get('/', function(req, res, next) {
   });
 router.put('/crearComentario', Authorization, ComentarioController.crearComentario) // lo usa la persona cuando comenta un servicio, se crea con estado pendiente por defecto
 router.put('/borrarComentario', Authorization, ComentarioController.borrarComentario)
+router.put('/aceptarComentario', Authorization, ComentarioController.aceptarComentario)
+router.get('/mostrarComentariosPendientes', Authorization, ComentarioController.mostrarComentariosPendientes)
 
 // Export the Router
 module.exports = router;

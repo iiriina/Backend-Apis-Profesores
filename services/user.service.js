@@ -129,6 +129,7 @@ exports.crearUsuario = async function (user) {
         experiencia: user.experiencia,
         foto: user.foto,
         servicios: [],
+        comentariosPendientes: [],
         contrataciones: []    
     })
 
@@ -248,5 +249,50 @@ exports.getIdsServiciosDeUsuario = async function (id_usuario) {
         return usuario.servicios;
     } catch (e) {
         throw Error("Error al obtener los IDs de servicios del usuario: " + e.message);
+    }
+}
+
+//Agrega un nuevo comentario pendeinte al array de comentariosPendientes
+exports.modificarArrayComentariosPendientes = async function (comentario) {
+    try {
+      // Actualizar el array de comentarios del servicio usando la función update
+      const result = await User.updateOne(
+        { _id: comentario.id_usuario },
+        { $push: { comentariosPendientes: comentario } }
+      );
+  
+      // Verificar el resultado de la operación de actualización
+      if (result.nModified === 0) {
+        throw Error("No se pudo modificar el array de comentarios del usuario");
+      }
+  
+      return result;
+    } catch (e) {
+      throw Error("Error al modificar el array de comentarios del usuario: " + e.message);
+    }
+};
+
+
+
+//se borra un comentario del array de comentariosPendientes (porque fue aceptado, o porque fue cancelado)
+exports.borrarComentario = async function (id_comentario, id_usuario) {
+    try {
+        console.log("id comentario" + id_comentario);
+        console.log("id usuario" + id_usuario);
+        // Actualizar el array de comentarios del usuario usando la función update
+        const result = await User.updateOne(
+            { _id: id_usuario },
+            { $pull: { comentariosPendientes: { _id: id_comentario } } }
+        );
+        console.log("holiiiiiiiiii sellega aca???");
+        console.log(result);
+
+        // Verificar el resultado de la operación de actualización
+        if (result.nModified === 0) {
+            throw Error("No se pudo borrar el comentario del usuario");
+        }
+        return result;
+    } catch (e) {
+        throw Error("Error al borrar el comentario del usuario: " + e.message);
     }
 }

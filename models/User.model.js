@@ -13,6 +13,7 @@ var UserSchema = new mongoose.Schema({
     experiencia: String,
     foto: String,
     servicios: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Servicio' }],
+    comentariosPendientes: [Comentario.schema],
     contrataciones: [Contratacion.schema]
 })
 

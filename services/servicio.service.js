@@ -170,40 +170,6 @@ exports.getServiciosPorIds = async function (id_usuario) {
 }
 
 
-
-//agregar comentario NUEVO al array de comentarios 
-/* 
-exports.modificarArrayComentarios = async function (comentario) {
-
-    // Crear la query para buscar al servicio
-    const query = { _id: comentario.id_servicio };
-    
-    var detallesServicio = await this.getUsers(query);
-    console.log(detallesServicio)
-    var servicio = detallesServicio[0];
-
-    // Verificar si el servicio existe
-    if (!detallesServicio) {
-        return res.status(404).json({ status: 404, message: "Servicio no encontrado" });
-    }
-    // Agregar el comentario al array de comentarios pendientes del servicio
-    servicio.comentarios.push(comentario);
-    console.log(comentario);
-    console.log(servicio.comentarios);
-
-    // If no old User Object exists return false
-    if (!servicio) {
-        return false;
-    }
-    try {
-        var servicio = await servicio.save()
-        return servicio;
-    } catch (e) {
-        throw Error("And Error occured while updating the Servicio");
-    }
-}
-*/
-
 exports.modificarArrayComentarios = async function (comentario) {
     try {
       // Actualizar el array de comentarios del servicio usando la función update
@@ -240,5 +206,81 @@ exports.borrarComentario = async function (id_comentario, id_servicio) {
         return result;
     } catch (e) {
         throw Error("Error al borrar el comentario del servicio: " + e.message);
+    }
+}
+
+exports.aceptarComentario = async function (id_servicio, id_comentario) {
+    try {
+        // Actualizar el estado del comentario en el array de comentarios del servicio
+        const result = await Servicio.updateOne(
+            { 
+                _id: id_servicio,
+                'comentarios._id': id_comentario
+            },
+            { $set: { 'comentarios.$.estado': 'aceptado' } }
+        );
+
+        // Verificar el resultado de la operación de actualización
+        if (result.nModified === 0) {
+            throw Error("No se pudo aceptar el comentario");
+        }
+
+        return result;
+    } catch (e) {
+        throw Error("Error al aceptar el comentario: " + e.message);
+    }
+}
+
+//devuelve el servicio que cumple con que el id del servicio sea el pedido
+//y devuelve solo los comentarios que son aceptados
+exports.getServicioPorIdServicio = async function (id_servicio) {
+
+    try {
+        // Utiliza el método findById para buscar un servicio por su id_servicio
+        const servicio = await Servicio.findById(id_servicio);
+
+        // Verifica si se encontró el servicio
+        if (!servicio) {
+            throw Error("Servicio no encontrado");
+        }
+
+        // Filtra los comentarios para incluir solo los aceptados
+        const comentariosAceptados = servicio.comentarios.filter(comentario => comentario.estado === 'aceptado');
+
+        // Crea una copia del servicio con los comentarios aceptados
+        const servicioConComentariosAceptados = {
+            ...servicio.toObject(),
+            comentarios: comentariosAceptados
+        };
+
+        // Devuelve el servicio con los comentarios aceptados
+        return servicioConComentariosAceptados;
+    } catch (e) {
+        // Retorna un mensaje de error describiendo la razón
+        console.error("Error en el servicio", e);
+        throw Error('Error al recuperar el servicio con comentarios aceptados');
+    }
+}
+
+//obtiene las referencias a servicios del usuario, 
+//itera en la base de datos los servicios de ese usuario y devuelve un array de comentarios pendeintes.
+exports.getComentariosPorIds = async function (id_usuario) {
+    try {
+        //llama a la funcion que devuelve los ids de servicios de un usuario en especifico
+        const idsServicios = await UsuarioService.getIdsServiciosDeUsuario(id_usuario);
+
+        // Busca los servicios correspondientes en la colección de servicios
+        const comentariosPendientes = await Servicio.aggregate([
+            { $match: { _id: { $in: idsServicios } } },
+            { $unwind: "$comentarios" },
+            { $match: { "comentarios.estado": "pendiente" } },
+            { $group: { _id: null, comentarios: { $push: "$comentarios" } } },
+            { $project: { _id: 0, comentarios: 1 } }
+          ]).exec();
+
+        //devuelve el array con comentarios pendientes
+        return comentariosPendientes;
+        } catch (e) {
+        throw Error("Error al obtener los servicios por IDs: " + e.message);
     }
 }

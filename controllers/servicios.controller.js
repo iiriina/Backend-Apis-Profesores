@@ -110,3 +110,20 @@ exports.modificarServicio = async function (req, res, next) {
         return res.status(400).json({status: 400., message: e.message})
     }
 }
+
+
+//trae el servicio en el que aprete ver más en la busqueda, o sea tiene que filtrar los comentarios
+//para que en el front se muestren solo los que fueron aceptados. 
+exports.getServicioPorIdServicio = async function (req, res, next) {
+
+    let id_servicio= req.body.id_servicio
+    try {
+        var Servicios = await ServicioService.getServicioPorIdServicio(id_servicio)
+        // Return the Users list with the appropriate HTTP password Code and Message.
+        return res.status(200).json({status: 200, data: Servicios, message: "Succesfully Servicio Recieved"});
+    } catch (e) {
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
