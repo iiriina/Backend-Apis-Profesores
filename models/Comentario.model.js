@@ -1,9 +1,8 @@
-const { ObjectId } = require('mongoose');
 const mongoose = require('mongoose');
-var mongoosePaginate = require('mongoose-paginate')
+const mongoosePaginate = require('mongoose-paginate');
+const { ObjectId } = require('mongoose');
 
 const ComentarioSchema = new mongoose.Schema({
-    id_usuario: ObjectId,
     id_servicio: ObjectId,
     nombre_estudiante: String,
     comentario: String,
@@ -11,7 +10,8 @@ const ComentarioSchema = new mongoose.Schema({
     estado: String
 });
 
-ComentarioSchema.plugin(mongoosePaginate)
-const Comentario = mongoose.model('Comentario', ComentarioSchema);
+ComentarioSchema.plugin(mongoosePaginate);
+
+const Comentario = mongoose.model('comentarios', ComentarioSchema)
 
 module.exports = Comentario;

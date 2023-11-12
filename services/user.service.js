@@ -2,6 +2,7 @@
 var User = require('../models/User.model');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 // Saving the context of this module inside the _the variable
 _this = this
@@ -42,7 +43,9 @@ exports.crearUsuario = async function (user) {
         telefono: user.telefono,
         titulo: user.titulo,
         experiencia: user.experiencia,
-        foto: user.foto
+        foto: user.foto,
+        comentarios: [],
+        contrataciones: []    
     })
 
     try {
@@ -88,6 +91,41 @@ exports.updateUser = async function (user) {
         throw Error("And Error occured while updating the User");
     }
 }
+
+exports.modificarArrayUsuario = async function (id_usuario, comentario) {
+
+    // Convertir el id_usuario a ObjectId
+    const userId = mongoose.Types.ObjectId(id_usuario);
+
+    // Crear la query para buscar al usuario
+    const query = { _id: userId };
+    
+    var detallesUsuario = await this.getUsers(query);
+    console.log(detallesUsuario)
+    var usuario = detallesUsuario[0];
+    // Verificar si el usuario existe
+    if (!detallesUsuario) {
+        return res.status(404).json({ status: 404, message: "Usuario no encontrado" });
+    }
+        // Agregar el comentario al array de comentarios pendientes del usuario
+        usuario.comentarios.push(comentario);
+        console.log(comentario);
+        console.log(usuario.comentarios);
+        // Guardar el usuario actualizado
+
+    // If no old User Object exists return false
+    if (!usuario) {
+        return false;
+    }
+    try {
+        var usuario = await usuario.save()
+        return usuario;
+    } catch (e) {
+        throw Error("And Error occured while updating the User");
+    }
+}
+
+
 
 exports.deleteUser = async function (id) {
     console.log(id)

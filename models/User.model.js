@@ -1,5 +1,7 @@
 var mongoose = require('mongoose')
 var mongoosePaginate = require('mongoose-paginate')
+const Comentario = require('./Comentario.model');
+const Contratacion = require('./Contratacion.model');
 
 
 var UserSchema = new mongoose.Schema({
@@ -9,7 +11,9 @@ var UserSchema = new mongoose.Schema({
     telefono: Number,
     titulo: String,
     experiencia: String,
-    foto: String
+    foto: String,
+    comentarios: [Comentario.schema],
+    contrataciones: [Contratacion.schema]
 })
 
 UserSchema.plugin(mongoosePaginate)

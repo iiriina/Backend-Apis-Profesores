@@ -14,6 +14,7 @@ router.delete('/eliminarServicio', Authorization, ServicioController.eliminarSer
 router.put('/cambiarVisibilidad', Authorization, ServicioController.cambiarVisibilidadServicio)
 router.get('/servicios',Authorization, ServicioController.getServicios)
 router.put('/modificarServicio',Authorization, ServicioController.modificarServicio)
+//router.put('/agregarComentario',Authorization, ServicioController.agregarComentario)
 
 
 
