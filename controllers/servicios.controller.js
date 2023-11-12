@@ -5,6 +5,7 @@ var UsuarioService = require('../services/user.service');
 // Saving the context of this module inside the _the variable
 _this = this;
 
+//en el service se agrega la referencia a servicio en el usuario en el array de refservicios
 exports.crearServicio = async function (req, res, next) {
 
     console.log("llegue al controller",req.body)
@@ -31,11 +32,15 @@ exports.crearServicio = async function (req, res, next) {
     }
 }
 
+//en el service se quita la referencia al servicio en el usuario en el array de refservicios
 exports.eliminarServicio = async function (req, res, next) {
 
+    //le tengo que mandar el id del servicio y el id del usuario en el body
     var id = req.body.id;
+    var id_usuario = req.body.id_usuario;
+
     try {
-        var deleted = await ServicioService.deleteServicio(id);
+        var deleted = await ServicioService.deleteServicio(id, id_usuario);
         res.status(200).send("Succesfully Deleted... ");
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message})
@@ -62,6 +67,7 @@ exports.cambiarVisibilidadServicio = async function (req, res, next) {
     }
 }
 
+//con filtros en la bsuqueda
 exports.getServicios = async function (req, res, next) {
     //ahi adentro de la request me van a llegar los parametros que quiero cambiar basicamente
     let filtro= req.body
@@ -75,6 +81,21 @@ exports.getServicios = async function (req, res, next) {
     }
 }
 
+//ahora voy a obtener los servicios de un usuario en especifico:
+exports.getServiciosDeUsuario = async function (req, res, next) {
+    //ahi adentro de la request me van a llegar los parametros que quiero cambiar basicamente
+    let id_usuario= req.body.id_usuario
+    try {
+        var Servicios = await ServicioService.getServiciosPorIds(id_usuario)
+        // Return the Users list with the appropriate HTTP password Code and Message.
+        return res.status(200).json({status: 200, data: Servicios, message: "Succesfully Servicios Recieved"});
+    } catch (e) {
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
+//cambia algun campo de los que están en servicio
 exports.modificarServicio = async function (req, res, next) {
 
     // Id is necessary for the update

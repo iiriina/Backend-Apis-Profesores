@@ -10,8 +10,7 @@ router.get('/', function(req, res, next) {
     res.send('Llegaste a la ruta de  api/comentario.routes');
   });
 router.put('/crearComentario', Authorization, ComentarioController.crearComentario) // lo usa la persona cuando comenta un servicio, se crea con estado pendiente por defecto
-
-
+router.put('/borrarComentario', Authorization, ComentarioController.borrarComentario)
 
 // Export the Router
 module.exports = router;

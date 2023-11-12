@@ -1,6 +1,6 @@
 // Gettign the Newly created Mongoose Model we just created 
 var Servicio = require('../models/Servicio.model');
-var UsuarioService = require('../services/user.service');
+var ServicioService = require('../services/servicio.service');
 var UsuarioController = require('../controllers/users.controller');
 
 var bcrypt = require('bcryptjs');
@@ -12,36 +12,30 @@ _this = this
 
 //esta funcion lo que hace es crear un comentario agregandolo al array que contiene los 
 //comentarios pendientes del usuario que corresponda. 
-exports.crearComentario = async function (id_usuario, comentario) {
+exports.crearComentario = async function (comentario) {
 
     try {
-    // Obtener el usuario asociado al comentario
-    // Convertir el id_usuario a ObjectId
-    /*
-    const userId = mongoose.Types.ObjectId(id_usuario);
-
-    // Crear la query para buscar al usuario
-    const query = { _id: userId };
     
-    var detallesUsuario = await UsuarioService.getUsers(query);
-    console.log(detallesUsuario)
-    var usuario = detallesUsuario[0];
-    // Verificar si el usuario existe
-    if (!detallesUsuario) {
-        return res.status(404).json({ status: 404, message: "Usuario no encontrado" });
-    }
-        // Agregar el comentario al array de comentarios pendientes del usuario
-        usuario.comentarios.push(nuevoComentario);
-        console.log(nuevoComentario);
-        console.log(usuario.comentarios);
-        // Guardar el usuario actualizado
-    */
-
-    await UsuarioService.modificarArrayUsuario(id_usuario, comentario);
+    await ServicioService.modificarArrayComentarios(comentario);
 
     return comentario;
     } catch (e) {
         console.error(e);
         throw Error('Error al crear el comentario');
+    }
+}
+
+exports.deleteComentario = async function (id_comentario, id_servicio) {
+    console.log(id_comentario);
+    console.log(id_servicio);
+    // Delete the Comentario
+    try {
+
+        const result = await ServicioService.borrarComentario(id_comentario, id_servicio);
+        console.log("Resultado de borrar comentario:", result);
+
+        return result;
+    } catch (e) {
+        throw Error("Error Occurred while Deleting the Servicio");
     }
 }

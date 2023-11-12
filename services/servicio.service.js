@@ -15,7 +15,6 @@ exports.crearServicio = async function (servicio) {
     // Crear la query para buscar al usuario
     const query = { _id: userId };
     
-
     var detallesUsuario = await UsuarioService.getUsers(query);
     console.log(detallesUsuario)
     var usuario = detallesUsuario[0];
@@ -46,6 +45,10 @@ exports.crearServicio = async function (servicio) {
         // Saving el servicio 
         var savedServicio = await newServicio.save();
         console.log("se guardo esto en la bdd" + savedServicio);
+
+        //y aca tengo que guardarme la referencia al servicio dentro del usuario 
+        await UsuarioService.agregarRefServicioAUsuario(usuario._id, savedServicio._id);
+
         return savedServicio; //Esto lo cambie, antes se devolvia el token cuando se creaba el usuario
     } catch (e) {
         // return a Error message describing the reason 
@@ -54,19 +57,27 @@ exports.crearServicio = async function (servicio) {
     }
 }
 
-exports.deleteServicio = async function (id) {
-    console.log(id)
+// se borra y borra la referencia del array de refservicios en usuario
+exports.deleteServicio = async function (id, id_usuario) {
+    console.log(id);
+    console.log(id_usuario);
     // Delete the Servicio
     try {
-        var deleted = await Servicio.remove({
+        var deleted = await Servicio.deleteOne({
             _id: id
-        })
-        if (deleted.n === 0 && deleted.ok === 1) {
-            throw Error("Servicio Could not be deleted")
+        });
+
+        if (deleted.deletedCount === 0) {
+            throw Error("Servicio Could not be deleted");
         }
+
+        // Verificar la respuesta de borrarRefServicioAUsuario
+        const result = await UsuarioService.borrarRefServicioAUsuario(id, id_usuario);
+        console.log("Resultado de borrarRefServicioAUsuario:", result);
+
         return deleted;
     } catch (e) {
-        throw Error("Error Occured while Deleting the Servicio")
+        throw Error("Error Occurred while Deleting the Servicio");
     }
 }
 
@@ -142,5 +153,92 @@ exports.modificarServicio = async function (servicio) {
         return savedServicio;
     } catch (e) {
         throw Error("Error al modificar el Servicio: " + e.message);
+    }
+}
+
+//con los id de servicios que manda el usuario, obtiene los servicios y los devuelve.
+exports.getServiciosPorIds = async function (id_usuario) {
+    try {
+        //llama a la funcion que devuelve los ids de servicios de un usuario en especifico
+        const idsServicios = await UsuarioService.getIdsServiciosDeUsuario(id_usuario);
+
+        // Busca los servicios correspondientes en la colección de servicios
+        return await Servicio.find({ _id: { $in: idsServicios } }).exec();
+    } catch (e) {
+        throw Error("Error al obtener los servicios por IDs: " + e.message);
+    }
+}
+
+
+
+//agregar comentario NUEVO al array de comentarios 
+/* 
+exports.modificarArrayComentarios = async function (comentario) {
+
+    // Crear la query para buscar al servicio
+    const query = { _id: comentario.id_servicio };
+    
+    var detallesServicio = await this.getUsers(query);
+    console.log(detallesServicio)
+    var servicio = detallesServicio[0];
+
+    // Verificar si el servicio existe
+    if (!detallesServicio) {
+        return res.status(404).json({ status: 404, message: "Servicio no encontrado" });
+    }
+    // Agregar el comentario al array de comentarios pendientes del servicio
+    servicio.comentarios.push(comentario);
+    console.log(comentario);
+    console.log(servicio.comentarios);
+
+    // If no old User Object exists return false
+    if (!servicio) {
+        return false;
+    }
+    try {
+        var servicio = await servicio.save()
+        return servicio;
+    } catch (e) {
+        throw Error("And Error occured while updating the Servicio");
+    }
+}
+*/
+
+exports.modificarArrayComentarios = async function (comentario) {
+    try {
+      // Actualizar el array de comentarios del servicio usando la función update
+      const result = await Servicio.updateOne(
+        { _id: comentario.id_servicio },
+        { $push: { comentarios: comentario } }
+      );
+  
+      // Verificar el resultado de la operación de actualización
+      if (result.nModified === 0) {
+        throw Error("No se pudo modificar el array de comentarios del servicio");
+      }
+  
+      return result;
+    } catch (e) {
+      throw Error("Error al modificar el array de comentarios del servicio: " + e.message);
+    }
+};
+
+//se borra un comentario del array de comentarios del servicio
+exports.borrarComentario = async function (id_comentario, id_servicio) {
+    try {
+        // Actualizar el array de comentarios del servicio usando la función update
+        const result = await Servicio.updateOne(
+            { _id: id_servicio },
+            { $pull: { comentarios: { _id: id_comentario } } }
+        );
+
+        // Verificar el resultado de la operación de actualización
+        if (result.nModified === 0) {
+            throw Error("No se pudo borrar el comentario del servicio");
+        }
+
+        return result;
+    } catch (e) {
+        throw Error("Error al borrar el comentario del servicio: " + e.message);
     }
 }
