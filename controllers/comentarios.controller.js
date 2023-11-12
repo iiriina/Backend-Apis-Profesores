@@ -27,15 +27,17 @@ exports.crearComentario = async function (req, res, next) {
     }
 }
 
-
+//borra el comentario del array de comentariosPendientes de usuario 
+//y borra el comentario del array de comentarios del servicio
 exports.borrarComentario = async function (req, res, next) {
 
     //le tengo que mandar el id del comentario y el id del servicio en el body
     var id_comentario = req.body.id_comentario;
     var id_servicio = req.body.id_servicio;
+    var id_usuario = req.body.id_usuario;
 
     try {
-        await ComentarioService.deleteComentario(id_comentario, id_servicio);
+        await ComentarioService.deleteComentario(id_comentario, id_servicio, id_usuario);
         res.status(200).send("Succesfully Deleted... ");
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message})
@@ -73,8 +75,8 @@ exports.mostrarComentariosPendientes = async function (req, res, next) {
     var id_usuario = req.body.id_usuario;
 
     try {
-        await ComentarioService.mostrarComentariosPendientes(id_usuario);
-        res.status(200).send({ createdComentario, message: "Succesfully Created Comentario"});
+        let comentariosPendientes = await ComentarioService.mostrarComentariosPendientes(id_usuario);
+        res.status(200).send({ comentariosPendientes , message: "Succesfully Created Comentario"});
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message})
     }

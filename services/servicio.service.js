@@ -262,25 +262,3 @@ exports.getServicioPorIdServicio = async function (id_servicio) {
     }
 }
 
-//obtiene las referencias a servicios del usuario, 
-//itera en la base de datos los servicios de ese usuario y devuelve un array de comentarios pendeintes.
-exports.getComentariosPorIds = async function (id_usuario) {
-    try {
-        //llama a la funcion que devuelve los ids de servicios de un usuario en especifico
-        const idsServicios = await UsuarioService.getIdsServiciosDeUsuario(id_usuario);
-
-        // Busca los servicios correspondientes en la colección de servicios
-        const comentariosPendientes = await Servicio.aggregate([
-            { $match: { _id: { $in: idsServicios } } },
-            { $unwind: "$comentarios" },
-            { $match: { "comentarios.estado": "pendiente" } },
-            { $group: { _id: null, comentarios: { $push: "$comentarios" } } },
-            { $project: { _id: 0, comentarios: 1 } }
-          ]).exec();
-
-        //devuelve el array con comentarios pendientes
-        return comentariosPendientes;
-        } catch (e) {
-        throw Error("Error al obtener los servicios por IDs: " + e.message);
-    }
-}

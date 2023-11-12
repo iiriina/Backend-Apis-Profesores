@@ -34,13 +34,19 @@ exports.crearComentario = async function (comentario) {
     }
 }
 
-exports.deleteComentario = async function (id_comentario, id_servicio) {
+//lo va a borrar de ambas, cuando la persona cancela el comentario lo borramos del array de comentarios de servicio
+//y lo borramos del array de comentariosPendientes
+exports.deleteComentario = async function (id_comentario, id_servicio, id_usuario) {
 
     console.log(id_comentario);
     console.log(id_servicio);
     // Delete the Comentario
     try {
 
+        //borramos al comentario del array de comentariosPendientes de usuario
+        UsuarioService.borrarComentario(id_comentario, id_usuario);
+
+        //borramos al comentario del array de comentarios de servicio
         const result = await ServicioService.borrarComentario(id_comentario, id_servicio);
         console.log("Resultado de borrar comentario:", result);
 
@@ -77,7 +83,7 @@ exports.mostrarComentariosPendientes = async function (id_usuario) {
         //que me devuelva las referencias a los servicios el usuario
         //le digo a servicios que me devuelva la lista con los comentarios pendientes
 
-        const result = await ServicioService.getComentariosPorIds(id_usuario);
+        const result = await UsuarioService.getComentariosPendientes(id_usuario);
         console.log("Los comentarios pendientes de este usuario son:", result);
 
         return result;

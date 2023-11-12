@@ -296,3 +296,23 @@ exports.borrarComentario = async function (id_comentario, id_usuario) {
         throw Error("Error al borrar el comentario del usuario: " + e.message);
     }
 }
+
+//itera el array de comentarios pendientes que tiene y muestra los comentarios
+exports.getComentariosPendientes = async function (id_usuario) {
+    try {
+        // Obtener al usuario por su ID
+        const usuario = await User.findById(id_usuario).exec();
+
+        // Verificar si el usuario existe
+        if (!usuario) {
+            throw Error("Usuario no encontrado");
+        }
+
+        // Acceder al array de comentarios pendientes en el usuario
+        const comentariosPendientes = usuario.comentariosPendientes;
+
+        return comentariosPendientes;
+    } catch (e) {
+        throw Error("Error al obtener los comentarios pendientes del usuario: " + e.message);
+    }
+}
