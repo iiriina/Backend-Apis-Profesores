@@ -9,7 +9,7 @@ var Authorization = require('../../auth/authorization');
 router.get('/', function(req, res, next) {
     res.send('Llegaste a la ruta de  api/comentario.routes');
   });
-router.put('/crearComentario', Authorization, ComentarioController.crearComentario) // lo usa la persona cuando comenta un servicio, se crea con estado pendiente por defecto
+router.put('/crearComentario', ComentarioController.crearComentario) // lo usa la persona cuando comenta un servicio, se crea con estado pendiente por defecto
 router.put('/borrarComentario', Authorization, ComentarioController.borrarComentario)
 router.put('/aceptarComentario', Authorization, ComentarioController.aceptarComentario)
 router.get('/mostrarComentariosPendientes', Authorization, ComentarioController.mostrarComentariosPendientes)

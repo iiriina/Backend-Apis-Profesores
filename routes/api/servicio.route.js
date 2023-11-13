@@ -12,9 +12,9 @@ router.get('/', function(req, res, next) {
 router.post('/crearServicio', Authorization, ServicioController.crearServicio)
 router.delete('/eliminarServicio', Authorization, ServicioController.eliminarServicio)
 router.put('/cambiarVisibilidad', Authorization, ServicioController.cambiarVisibilidadServicio)
-router.get('/servicios',Authorization, ServicioController.getServicios)
+router.get('/servicios', ServicioController.getServicios) //muestra todos los servicios que cumple con filtros
 router.get('/serviciosDeUsuario',Authorization, ServicioController.getServiciosDeUsuario)
-router.get('/servicioPorIdServicio',Authorization, ServicioController.getServicioPorIdServicio)
+router.get('/servicioPorIdServicio', ServicioController.getServicioPorIdServicio) //muestra la info del servicio y los comentarios al que le hizo click el usuario en ver más
 
 
 

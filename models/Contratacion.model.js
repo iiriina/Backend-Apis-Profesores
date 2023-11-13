@@ -8,7 +8,8 @@ const ContratacionSchema = new mongoose.Schema({
     email: String,
     horarios: String,
     motivos: String,
-    estado: String // aceptado, finalizado, cancelado
+    estado: String, // aceptado, finalizado, cancelado
+    orden: Number
 });
 
 ContratacionSchema.plugin(mongoosePaginate);

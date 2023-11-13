@@ -316,3 +316,94 @@ exports.getComentariosPendientes = async function (id_usuario) {
         throw Error("Error al obtener los comentarios pendientes del usuario: " + e.message);
     }
 }
+
+//Agrega una nueva contratacion al array de contrataciones
+exports.modificarArrayContrataciones = async function (contratacion, id_usuario) {
+    try {
+      // Actualizar el array de contrataciones del servicio usando la función update
+      const result = await User.updateOne(
+        { _id: id_usuario },
+        { $push: { contrataciones: contratacion } }
+      );
+  
+      // Verificar el resultado de la operación de actualización
+      if (result.nModified === 0) {
+        throw Error("No se pudo modificar el array de contrataciones del usuario");
+      }
+  
+      return result;
+    } catch (e) {
+      throw Error("Error al modificar el array de contrataciones del usuario: " + e.message);
+    }
+};
+
+//muestra las contrataciones de un usuario por id de usuario
+exports.getContrataciones = async function (id_usuario) {
+    try {
+        // Obtener al usuario por su ID
+        const usuario = await User.findById(id_usuario).exec();
+
+        // Verificar si el usuario existe
+        if (!usuario) {
+            throw Error("Usuario no encontrado");
+        }
+        usuario.contrataciones.sort((a, b) => a.orden - b.orden);
+
+        // Acceder al array de comentarios pendientes en el usuario
+        const contrataciones = usuario.contrataciones;
+
+        return contrataciones;
+    } catch (e) {
+        throw Error("Error al obtener las contrataciones del usuario: " + e.message);
+    }
+}
+
+//le cambia el estado a la contratacion segun por el que ingresa el usuario 
+exports.cambiarEstadoContratacion = async function (id_contratacion, id_usuario, estado) {
+    try {
+        // Asegurarme de que sea un ObjectId
+        const userId = mongoose.Types.ObjectId(id_usuario);
+        console.log(id_usuario);
+        // Buscar el usuario por el Id
+        const usuario = await User.findById(userId);
+
+        // Encontrar la contratación dentro del array de contrataciones del usuario
+        const contratacion = usuario.contrataciones.find(contratacion => contratacion._id.equals(id_contratacion));
+
+        // Verificar si la contratación fue encontrada
+        if (!contratacion) {
+            throw Error("Contratación no encontrada");
+        }
+
+        // Cambiar el estado de la contratación
+        contratacion.estado = estado;
+
+        // Asignar un orden según el estado
+        switch (estado) {
+            case 'solicitada':
+                contratacion.orden = 1;
+                break;
+            case 'aceptada':
+                contratacion.orden = 2;
+                break;
+            case 'finalizada':
+                contratacion.orden = 3;
+                break;
+            case 'cancelada':
+                contratacion.orden = 4;
+                break;
+            default:
+                throw Error("Estado de contratación no válido");
+        }
+
+        // Guardar el usuario actualizado
+        await usuario.save();
+        console.log(usuario.contrataciones[0].estado);
+        console.log(usuario.contrataciones[0]);
+        // Devolver la contratación actualizada
+        return contratacion;
+    } catch (e) {
+        throw Error("Error al cambiar el estado de la contratación: " + e.message);
+    }
+};
+
