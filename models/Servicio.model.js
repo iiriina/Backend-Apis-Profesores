@@ -9,7 +9,7 @@ var ServicioSchema = new mongoose.Schema({
     nombre_usuario: String,
     titulo: String,
     experiencia: String,
-    foto: String,
+    imagenUrl: String,
     nombre_servicio: String,
     descripcion: String,
     duracion: String,

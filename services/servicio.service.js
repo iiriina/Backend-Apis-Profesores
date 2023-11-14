@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 // Saving the context of this module inside the _the variable
 _this = this
 
-exports.crearServicio = async function (servicio) {
+exports.crearServicio = async function (servicio, imagenUrl) {
     // Convertir el id_usuario a ObjectId
     const userId = mongoose.Types.ObjectId(servicio.id_usuario);
 
@@ -28,7 +28,7 @@ exports.crearServicio = async function (servicio) {
         nombre_usuario: usuario.nombre,
         titulo: usuario.titulo,
         experiencia: usuario.experiencia,
-        foto: usuario.foto,
+        imagenUrl: imagenUrl,
         nombre_servicio: servicio.nombre_servicio,
         descripcion: servicio.descripcion,
         duracion: servicio.duracion,

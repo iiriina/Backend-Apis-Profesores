@@ -82,7 +82,6 @@ exports.crearUsuario = async function (req, res, next) {
         telefono: req.body.telefono,
         titulo: req.body.titulo,
         experiencia: req.body.experiencia,
-        foto: req.body.foto,
         servicios: [],
         comentariosPendientes: [],
         contrataciones: []    

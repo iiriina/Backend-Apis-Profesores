@@ -127,7 +127,6 @@ exports.crearUsuario = async function (user) {
         telefono: user.telefono,
         titulo: user.titulo,
         experiencia: user.experiencia,
-        foto: user.foto,
         servicios: [],
         comentariosPendientes: [],
         contrataciones: []    

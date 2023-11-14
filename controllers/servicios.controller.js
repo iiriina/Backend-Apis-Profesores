@@ -1,5 +1,6 @@
 var ServicioService = require('../services/servicio.service');
 var UsuarioService = require('../services/user.service');
+var CloudinaryService = require('../services/cloudinary.service');
 
 
 // Saving the context of this module inside the _the variable
@@ -9,7 +10,10 @@ _this = this;
 exports.crearServicio = async function (req, res, next) {
 
     console.log("llegue al controller",req.body)
-    var Servicio = {
+    
+    const fileBuffer = req.file.buffer;
+
+    /* var Servicio = {
         id_usuario: req.body.id_usuario,
         nombre_servicio: req.body.nombre_servicio,
         descripcion: req.body.descripcion,
@@ -21,10 +25,11 @@ exports.crearServicio = async function (req, res, next) {
         tipo_de_clase: req.body.tipo_de_clase,
         visibilidad: req.body.visibilidad,
         comentarios: []
-    }
+    }*/
     try {
+        const urlImg = await CloudinaryService.uploadImage(fileBuffer);
         // Calling the Service function with the new object from the Request Body
-        var createdServicio = await ServicioService.crearServicio(Servicio)
+        var createdServicio = await ServicioService.crearServicio(req.body, urlImg)
         return res.status(201).json({ createdServicio, message: "Succesfully Created Service"})
     } catch (error) {
         console.error(error);
