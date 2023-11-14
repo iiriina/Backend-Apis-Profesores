@@ -142,7 +142,27 @@ exports.solicitarCambioContrasenia = async function (req, res, next) {
 
 //actualizar el campo de contraseña con lo que envia en el GUARDAR CONTRASEÑA la persona después de que 
 //accedio a la pantalla que le llego por mail
-/* exports.cambiarContrasenia = async function (req, res, next) {
+exports.cambiarContrasenia = async function (req, res, next) {
 
+    //chequeo que le enviaron los parametros necesarios
+    if (!req.body.email) {
+        return res.status(400).json({status: 400, message: "Tienes que ingresar el email"})
+    }
 
-};*/
+    if (!req.body.contrasenia) {
+        return res.status(400).json({status: 400, message: "Tienes que ingresar la nueva contrasenia"})
+    }
+
+    try {
+        
+        await UserService.cambiarContrasenia(req.body.email, req.body.contrasenia)
+        return res.status(201).json({ status: 200, message: "Se cambio la contrasenia"})
+
+    } catch (error) {
+
+        console.error(error);
+        return res.status(400).json({ status: 400, message: "Error al cambiar la contrasenia" });
+    
+    }
+
+};

@@ -406,3 +406,41 @@ exports.cambiarEstadoContratacion = async function (id_contratacion, id_usuario,
     }
 };
 
+//Le pasan por parametro la contrasenia y el email y actualiza el usuario
+exports.cambiarContrasenia = async function (email, contrasenia) {
+
+    try {
+
+        var filter = {email:email}
+        console.log(filter)
+        try {
+            //Find the old User Object by the email
+            var oldUser = await User.findOne(filter);
+            console.log (oldUser)
+        } catch (e) {
+            throw Error("Error al encontrar el usuario al que le quieres cambiar la contrasenia")
+        }
+        // If no old User Object exists return false
+        if (!oldUser) {
+            return false;
+        }
+        //Edit the User Object
+        var hashedPassword = bcrypt.hashSync(contrasenia, 8);
+        oldUser.contrasenia = hashedPassword
+
+        try {
+            var savedUser = await oldUser.save()
+            return savedUser;
+        } catch (e) {
+            throw Error("Error al guardar el usuario con la nueva contrasenia");
+        }
+    
+        //No te devuelve un token porque te lleva a la pantalla de iniciar sesion cuando apretaste cambiar contra, 
+        //ahora podes iniciar sesion con tus nuevas credenciales
+    } catch (e) {
+        // return a Error message describing the reason 
+        console.log(e)    
+        throw Error("Error al guardar el usuario con la nueva contrasenia")
+    }
+}
+

@@ -19,6 +19,7 @@ router.delete('/delete', Authorization, UserController.removeUser) */
 
 router.post('/solicitarCambioContrasenia', UserController.solicitarCambioContrasenia) //solicita cambio contrasenia
 
+router.put('/cambiarContrasenia', UserController.cambiarContrasenia) //solicita cambio contrasenia
 
 // Export the Router
 module.exports = router;
