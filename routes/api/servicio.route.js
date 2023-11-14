@@ -21,8 +21,7 @@ router.get('/serviciosDeUsuario',Authorization, ServicioController.getServiciosD
 router.get('/servicioPorIdServicio', ServicioController.getServicioPorIdServicio) //muestra la info del servicio y los comentarios al que le hizo click el usuario en ver más
 
 
-
-router.put('/modificarServicio',Authorization,upload.single('imagen'), ServicioController.modificarServicio)
+router.put('/modificarServicio',Authorization, upload.single('imagen'), ServicioController.modificarServicio)
 //router.put('/agregarComentario',Authorization, ServicioController.agregarComentario)
 
 

@@ -1,4 +1,5 @@
 var UserService = require('../services/user.service');
+const MailService = require('../services/mail.service');
 
 
 // Saving the context of this module inside the _the variable
@@ -121,3 +122,27 @@ exports.loginUsuario = async function (req, res, next) {
         return res.status(400).json({status: 400, message: "Invalid username or password"})
     }
 }
+
+
+//se llama cuando el usuario apriete el boton de que olvido su contrasenia, le manda un mail 
+//tiene que completar el mail.. 
+exports.solicitarCambioContrasenia = async function (req, res, next) {
+    try {
+        // Lógica para enviar el correo electrónico
+        await MailService.sendMail(req.body.email);
+
+        // Respuesta exitosa
+        return res.status(200).json({ status: 200, message: "Se ha enviado un correo electrónico" });
+    } catch (error) {
+        // Manejo de errores
+        console.error("Error al enviar el correo electrónico:", error);
+        return res.status(500).json({ status: 500, message: "Ocurrió un error al enviar el correo electrónico" });
+    }
+};
+
+//actualizar el campo de contraseña con lo que envia en el GUARDAR CONTRASEÑA la persona después de que 
+//accedio a la pantalla que le llego por mail
+/* exports.cambiarContrasenia = async function (req, res, next) {
+
+
+};*/

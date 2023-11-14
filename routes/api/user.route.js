@@ -12,11 +12,12 @@ router.get('/', function(req, res, next) {
 router.post('/registration', UserController.crearUsuario)
 router.post('/login/', UserController.loginUsuario)
 
-router.get('/users',Authorization, UserController.getUsers)
+/* router.get('/users',Authorization, UserController.getUsers)
 router.post('/userByMail', Authorization, UserController.getUsersByMail)
 router.put('/update', Authorization, UserController.updateUser)
-router.delete('/delete', Authorization, UserController.removeUser)
+router.delete('/delete', Authorization, UserController.removeUser) */
 
+router.post('/solicitarCambioContrasenia', UserController.solicitarCambioContrasenia) //solicita cambio contrasenia
 
 
 // Export the Router
