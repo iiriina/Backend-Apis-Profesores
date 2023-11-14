@@ -13,19 +13,6 @@ exports.crearServicio = async function (req, res, next) {
     
     const fileBuffer = req.file.buffer;
 
-    /* var Servicio = {
-        id_usuario: req.body.id_usuario,
-        nombre_servicio: req.body.nombre_servicio,
-        descripcion: req.body.descripcion,
-        duracion: req.body.duracion,
-        frecuencia: req.body.frecuencia,
-        calificacion: req.body.calificacion,
-        precio: req.body.precio,
-        categoria: req.body.categoria,
-        tipo_de_clase: req.body.tipo_de_clase,
-        visibilidad: req.body.visibilidad,
-        comentarios: []
-    }*/
     try {
         const urlImg = await CloudinaryService.uploadImage(fileBuffer);
         // Calling the Service function with the new object from the Request Body
@@ -100,21 +87,30 @@ exports.getServiciosDeUsuario = async function (req, res, next) {
     }
 }
 
-//cambia algun campo de los que están en servicio
 exports.modificarServicio = async function (req, res, next) {
-
-    // Id is necessary for the update
-    if (!req.body._id) {
-        return res.status(400).json({status: 400., message: "Necesitas enviar el id del Servicio a Modificar"})
-    }
-
     try {
-        var updatedServicio = await ServicioService.modificarServicio(req.body)
-        return res.status(200).json({status: 200, data: updatedServicio, message: "Succesfully Updated Servicio"})
+        let imageUrl;
+
+        // Verificar si se proporciona una nueva imagen
+        if (req.file && req.file.buffer) {
+            // Subir la nueva imagen y obtener la URL
+            imageUrl = await CloudinaryService.uploadImage(req.file.buffer);
+        }
+
+        // Crear el objeto actualizado con la nueva URL si existe
+        const updatedServiceData = {
+            ...req.body,
+            imagenUrl: imageUrl || req.body.imagenUrl // Usa la nueva URL si existe, de lo contrario, usa la existente
+        };
+
+        // Llamar a la función para modificar el servicio
+        var updatedServicio = await ServicioService.modificarServicio(updatedServiceData);
+
+        return res.status(200).json({ status: 200, data: updatedServicio, message: "Succesfully Updated Servicio" });
     } catch (e) {
-        return res.status(400).json({status: 400., message: e.message})
+        return res.status(400).json({ status: 400, message: e.message });
     }
-}
+};
 
 
 //trae el servicio en el que aprete ver más en la busqueda, o sea tiene que filtrar los comentarios

@@ -22,7 +22,7 @@ router.get('/servicioPorIdServicio', ServicioController.getServicioPorIdServicio
 
 
 
-router.put('/modificarServicio',Authorization, ServicioController.modificarServicio)
+router.put('/modificarServicio',Authorization,upload.single('imagen'), ServicioController.modificarServicio)
 //router.put('/agregarComentario',Authorization, ServicioController.agregarComentario)
 
 

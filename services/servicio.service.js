@@ -142,8 +142,8 @@ exports.modificarServicio = async function (servicio) {
 
         // Iterar sobre las propiedades proporcionadas en el cuerpo de la solicitud
         Object.keys(servicio).forEach((prop) => {
-            // Verificar si la propiedad existe en el servicio y no es "_id" ni null
-            if (oldServicio[prop] !== undefined && oldServicio[prop] !== null && prop !== "_id") {
+            // Verificar si la propiedad existe en el servicio (en lo que me pasa el usuario) y no es "_id", ni undefined, ni null
+            if (oldServicio[prop] !== undefined && oldServicio[prop] !== null && prop !== "_id" && servicio[prop] !== undefined && servicio[prop] !== null) {
                 oldServicio[prop] = servicio[prop];
             }
         });
