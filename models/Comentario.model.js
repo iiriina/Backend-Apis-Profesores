@@ -4,6 +4,7 @@ const { ObjectId } = require('mongoose');
 
 const ComentarioSchema = new mongoose.Schema({
     id_servicio: ObjectId,
+    id_usuario: ObjectId,
     nombre_estudiante: String,
     comentario: String,
     calificacion: Number,
