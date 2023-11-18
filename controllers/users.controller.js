@@ -144,15 +144,6 @@ exports.solicitarCambioContrasenia = async function (req, res, next) {
 //accedio a la pantalla que le llego por mail
 exports.cambiarContrasenia = async function (req, res, next) {
 
-    //chequeo que le enviaron los parametros necesarios
-    if (!req.body.email) {
-        return res.status(400).json({status: 400, message: "Tienes que ingresar el email"})
-    }
-
-    if (!req.body.contrasenia) {
-        return res.status(400).json({status: 400, message: "Tienes que ingresar la nueva contrasenia"})
-    }
-
     try {
         
         await UserService.cambiarContrasenia(req.body.email, req.body.contrasenia)
@@ -166,3 +157,4 @@ exports.cambiarContrasenia = async function (req, res, next) {
     }
 
 };
+

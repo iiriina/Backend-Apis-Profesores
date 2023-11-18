@@ -2,6 +2,8 @@ var express = require('express')
 var router = express.Router()
 var ServicioController = require('../../controllers/servicios.controller');
 var Authorization = require('../../auth/authorization');
+// Importar todos los middleware de validaciónvalidateEmail
+const validationMiddleware = require('../../middleware/validationServicio');
 // Configura multer para guardar los archivos en la memoria
 const multer = require('multer');
 const storage = multer.memoryStorage();
@@ -13,7 +15,7 @@ const upload = multer({ storage: storage });
 router.get('/', function(req, res, next) {
     res.send('Llegaste a la ruta de  api/servicio.routes');
   });
-router.post('/crearServicio', Authorization, upload.single('imagen'), ServicioController.crearServicio);
+router.post('/crearServicio', Authorization, upload.single('imagen'), validationMiddleware.validateCrearServicio, ServicioController.crearServicio); //validado
 router.delete('/eliminarServicio', Authorization, ServicioController.eliminarServicio)
 router.put('/cambiarVisibilidad', Authorization, ServicioController.cambiarVisibilidadServicio)
 router.get('/servicios', ServicioController.getServicios) //muestra todos los servicios que cumple con filtros
