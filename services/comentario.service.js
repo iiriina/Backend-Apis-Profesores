@@ -67,7 +67,9 @@ exports.aceptarComentario = async function (id_servicio, id_comentario, id_usuar
         await UsuarioService.borrarComentario(id_comentario, id_usuario);
 
         //cambiamos el estado en servicio a aceptado
-        let result = await ServicioService.aceptarComentario(id_servicio, id_comentario);
+        //cambiarle la calificacion al servicio, ahora va a ser el total de elementos que haya en el array
+        //de comentarios con estado aceptado y CALIFICACION que exista digamos, que tenga ese campo el documento
+        let result = await ServicioService.aceptarComentario(id_servicio, id_comentario);        
 
         return result;
     } catch (e) {

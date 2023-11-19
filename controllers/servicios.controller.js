@@ -75,7 +75,7 @@ exports.getServicios = async function (req, res, next) {
 
 //ahora voy a obtener los servicios de un usuario en especifico:
 exports.getServiciosDeUsuario = async function (req, res, next) {
-    //ahi adentro de la request me van a llegar los parametros que quiero cambiar basicamente
+
     let id_usuario= req.body.id_usuario
     try {
         var Servicios = await ServicioService.getServiciosPorIds(id_usuario)

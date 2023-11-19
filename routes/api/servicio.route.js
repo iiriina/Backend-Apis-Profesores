@@ -16,11 +16,11 @@ router.get('/', function(req, res, next) {
     res.send('Llegaste a la ruta de  api/servicio.routes');
   });
 router.post('/crearServicio', Authorization, upload.single('imagen'), validationMiddleware.validateCrearServicio, ServicioController.crearServicio); //validado
-router.delete('/eliminarServicio', Authorization, ServicioController.eliminarServicio)
-router.put('/cambiarVisibilidad', Authorization, ServicioController.cambiarVisibilidadServicio)
+router.delete('/eliminarServicio', validationMiddleware.validateEliminarServicio, Authorization,  ServicioController.eliminarServicio) //validado
+router.put('/cambiarVisibilidad', validationMiddleware.validateCambiarVisibilidadServicio, Authorization, ServicioController.cambiarVisibilidadServicio)
 router.get('/servicios', ServicioController.getServicios) //muestra todos los servicios que cumple con filtros
-router.get('/serviciosDeUsuario',Authorization, ServicioController.getServiciosDeUsuario)
-router.get('/servicioPorIdServicio', ServicioController.getServicioPorIdServicio) //muestra la info del servicio y los comentarios al que le hizo click el usuario en ver más
+router.get('/serviciosDeUsuario', validationMiddleware.validateGetServiciosDeUsuario, Authorization, ServicioController.getServiciosDeUsuario)
+router.get('/servicioPorIdServicio', validationMiddleware.validateGetServicioPorIdServicio, ServicioController.getServicioPorIdServicio) //muestra la info del servicio y los comentarios al que le hizo click el usuario en ver más
 
 
 router.put('/modificarServicio',Authorization, upload.single('imagen'), ServicioController.modificarServicio)

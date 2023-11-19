@@ -208,7 +208,7 @@ exports.borrarComentario = async function (id_comentario, id_servicio) {
         throw Error("Error al borrar el comentario del servicio: " + e.message);
     }
 }
-
+/* 
 exports.aceptarComentario = async function (id_servicio, id_comentario) {
     try {
         // Actualizar el estado del comentario en el array de comentarios del servicio
@@ -230,6 +230,49 @@ exports.aceptarComentario = async function (id_servicio, id_comentario) {
         throw Error("Error al aceptar el comentario: " + e.message);
     }
 }
+*/
+
+exports.aceptarComentario = async function (id_servicio, id_comentario) {
+    try {
+        // Obtener el servicio y el comentario
+        const servicio = await Servicio.findById(id_servicio);
+        const comentario = servicio.comentarios.find(c => c._id.toString() === id_comentario);
+
+        // Verificar si se encontró el comentario
+        if (!comentario) {
+            throw Error("Comentario no encontrado");
+        }
+
+        // Filtrar solo los comentarios aceptados con calificación numérica
+        const comentariosConCalificacion = servicio.comentarios
+            .filter(c => c.estado === 'aceptado' && typeof c.calificacion === 'number');
+
+        // Obtener las calificaciones
+        const calificaciones = comentariosConCalificacion.map(c => c.calificacion);
+
+        // Calcular el nuevo promedio y redondearlo
+        const nuevoPromedio = (calificaciones.reduce((sum, calificacion) => sum + calificacion, 0) + (typeof comentario.calificacion === 'number' ? comentario.calificacion : 0)) / (calificaciones.length + (typeof comentario.calificacion === 'number' ? 1 : 0));
+
+        // Redondear el nuevo promedio
+        const nuevoPromedioRedondeado = Math.round(nuevoPromedio);
+
+        // Actualizar el estado del comentario
+        comentario.estado = 'aceptado';
+
+        // Actualizar el campo calificacion en el documento del servicio con el nuevo promedio redondeado
+        servicio.calificacion = nuevoPromedioRedondeado;
+
+        // Guardar los cambios
+        await servicio.save();
+
+        return servicio;
+    } catch (e) {
+        throw Error("Error al aceptar el comentario: " + e.message);
+    }
+}
+
+
+
 
 //devuelve el servicio que cumple con que el id del servicio sea el pedido
 //y devuelve solo los comentarios que son aceptados
