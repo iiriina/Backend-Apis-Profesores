@@ -1,7 +1,9 @@
 var ServicioService = require('../services/servicio.service');
 var UsuarioService = require('../services/user.service');
 var CloudinaryService = require('../services/cloudinary.service');
+const { cloudinary } = require('../services/cloudinary.service');
 
+const streamifier = require('streamifier');
 
 // Saving the context of this module inside the _the variable
 _this = this;
@@ -11,9 +13,17 @@ exports.crearServicio = async function (req, res, next) {
 
     console.log("llegue al controller",req.body)
     
-    const fileBuffer = req.file.buffer;
-
     try {
+        const fileBuffer = req.file.buffer; 
+        console.log(req.body.imagen);  
+        console.log("que se manda:", req.body);  
+        console.log("que se manda:", req.file);  
+        /*
+        const response = await cloudinary.uploader.upload(fileString, {upload_preset: 'imagenes'});
+        console.log(response);
+        
+        res.json(response)
+        */
         const urlImg = await CloudinaryService.uploadImage(fileBuffer);
         // Calling the Service function with the new object from the Request Body
         var createdServicio = await ServicioService.crearServicio(req.body, urlImg)

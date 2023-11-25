@@ -1,4 +1,5 @@
-const cloudinary = require('cloudinary').v2;
+//const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -31,3 +32,6 @@ const uploadImage = async (imageBuffer) => {
 module.exports = {
     uploadImage,
 };
+
+
+//module.exports = { cloudinary };

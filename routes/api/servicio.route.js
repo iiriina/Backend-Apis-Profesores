@@ -15,7 +15,7 @@ const upload = multer({ storage: storage });
 router.get('/', function(req, res, next) {
     res.send('Llegaste a la ruta de  api/servicio.routes');
   });
-router.post('/crearServicio', Authorization, upload.single('imagen'), validationMiddleware.validateCrearServicio, ServicioController.crearServicio); //validado
+router.post('/crearServicio', Authorization, upload.single('imagen'), ServicioController.crearServicio); //validado
 router.delete('/eliminarServicio', validationMiddleware.validateEliminarServicio, Authorization,  ServicioController.eliminarServicio) //validado
 router.put('/cambiarVisibilidad', validationMiddleware.validateCambiarVisibilidadServicio, Authorization, ServicioController.cambiarVisibilidadServicio)
 router.get('/servicios', ServicioController.getServicios) //muestra todos los servicios que cumple con filtros
