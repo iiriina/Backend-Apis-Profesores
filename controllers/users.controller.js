@@ -43,7 +43,6 @@ exports.updateUser = async function (req, res, next) {
         return res.status(400).json({status: 400., message: "Name be present"})
     }
 
-    
     var User = {
        
         name: req.body.name ? req.body.name : null,
@@ -128,17 +127,27 @@ exports.loginUsuario = async function (req, res, next) {
 //tiene que completar el mail.. 
 exports.solicitarCambioContrasenia = async function (req, res, next) {
     try {
+        if (!req.body.email){
+            return res.status(400).json({ status: 400, message: "Tienes que ingresar el email!" });
+        }
+        let filtro = { email: req.body.email }
         // Lógica para enviar el correo electrónico
-        await MailService.sendMail(req.body.email);
+        var existeUsuario = await UserService.getUsers(filtro);
+        //si no existe un usuario con ese mail, no se manda ningún mail
+        if (existeUsuario === 1) {
+            return res.status(404).json({ status: 404, message: "No existe un usuario con ese correo electrónico" });
+        }
 
+        await MailService.sendMail(req.body.email);
         // Respuesta exitosa
         return res.status(200).json({ status: 200, message: "Se ha enviado un correo electrónico" });
     } catch (error) {
         // Manejo de errores
         console.error("Error al enviar el correo electrónico:", error);
-        return res.status(500).json({ status: 500, message: "Ocurrió un error al enviar el correo electrónico" });
+        return res.status(400).json({ status: 400, message: "Ocurrió un error al enviar el correo electrónico" });
     }
 };
+
 
 //actualizar el campo de contraseña con lo que envia en el GUARDAR CONTRASEÑA la persona después de que 
 //accedio a la pantalla que le llego por mail

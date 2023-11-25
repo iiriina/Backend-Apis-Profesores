@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-const resetLink = 'http://localhost:5173/resetpwd';
+const resetLink = 'http://localhost:5173/cambiarContrasenia';
 
 
 const sendMail = async (email) => {

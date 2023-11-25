@@ -9,21 +9,22 @@ _this = this
 
 // voy a obtener el usuario según el id que corresponda
 exports.getUsers = async function (query) {
-
     try {
         console.log("Query", query);
 
         // Find users based on the query
         const users = await User.find(query);
-        console.log("los usuarios que hay son" + users)
-        // Return the users
-        return users;
+        console.log("los usuarios que hay son" + users);
+
+        // Devolver 0 si hay usuarios, 1 si no hay usuarios
+        return users.length > 0 ? 0 : 1;
     } catch (e) {
-        // return an Error message describing the reason
+        // Manejar errores y devolver 1 en caso de error
         console.error("Error in services", e);
-        throw Error('Error while retrieving Users');
+        return 1;
     }
 }
+
 
 
 exports.updateUser = async function (user) {
@@ -53,41 +54,6 @@ exports.updateUser = async function (user) {
         throw Error("And Error occured while updating the User");
     }
 }
-
-/* esto va a estar adentro del array de servicios !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-exports.modificarArrayUsuario = async function (id_usuario, comentario) {
-
-    // Convertir el id_usuario a ObjectId
-    const userId = mongoose.Types.ObjectId(id_usuario);
-
-    // Crear la query para buscar al usuario
-    const query = { _id: userId };
-    
-    var detallesUsuario = await this.getUsers(query);
-    console.log(detallesUsuario)
-    var usuario = detallesUsuario[0];
-    // Verificar si el usuario existe
-    if (!detallesUsuario) {
-        return res.status(404).json({ status: 404, message: "Usuario no encontrado" });
-    }
-        // Agregar el comentario al array de comentarios pendientes del usuario
-        usuario.comentarios.push(comentario);
-        console.log(comentario);
-        console.log(usuario.comentarios);
-        // Guardar el usuario actualizado
-
-    // If no old User Object exists return false
-    if (!usuario) {
-        return false;
-    }
-    try {
-        var usuario = await usuario.save()
-        return usuario;
-    } catch (e) {
-        throw Error("And Error occured while updating the User");
-    }
-}
-*/
 
 
 exports.deleteUser = async function (id) {

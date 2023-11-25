@@ -14,9 +14,9 @@ router.get('/', function(req, res, next) {
   });
 router.post('/registration', validationMiddleware.validateCreateUser, UserController.crearUsuario) //validado
 router.post('/login/',validationMiddleware.validateLoginUser, UserController.loginUsuario) //validado
+router.post('/userByMail', UserController.getUsersByMail)
 
 /* router.get('/users',Authorization, UserController.getUsers)
-router.post('/userByMail', Authorization, UserController.getUsersByMail)
 router.put('/update', Authorization, UserController.updateUser)
 router.delete('/delete', Authorization, UserController.removeUser) */
 
