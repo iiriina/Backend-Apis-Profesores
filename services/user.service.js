@@ -9,21 +9,23 @@ _this = this
 
 // voy a obtener el usuario según el id que corresponda
 exports.getUsers = async function (query) {
+
     try {
         console.log("Query", query);
 
         // Find users based on the query
         const users = await User.find(query);
-        console.log("los usuarios que hay son" + users);
-
-        // Devolver 0 si hay usuarios, 1 si no hay usuarios
-        return users.length > 0 ? 0 : 1;
+        console.log("los usuarios que hay son" + users)
+        // Return the users
+        return users;
     } catch (e) {
+        // return an Error message describing the reason
         // Manejar errores y devolver 1 en caso de error
         console.error("Error in services", e);
-        return 1;
+        throw Error('Error while retrieving Users');
     }
 }
+
 
 
 

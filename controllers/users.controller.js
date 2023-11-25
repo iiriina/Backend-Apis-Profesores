@@ -130,12 +130,21 @@ exports.solicitarCambioContrasenia = async function (req, res, next) {
         if (!req.body.email){
             return res.status(400).json({ status: 400, message: "Tienes que ingresar el email!" });
         }
-        let filtro = { email: req.body.email }
+        /* let filtro = { email: req.body.email }
         // Lógica para enviar el correo electrónico
         var existeUsuario = await UserService.getUsers(filtro);
         //si no existe un usuario con ese mail, no se manda ningún mail
         if (existeUsuario === 1) {
             return res.status(404).json({ status: 404, message: "No existe un usuario con ese correo electrónico" });
+        }*/
+        // Crear la query para buscar al usuario
+        const query = { email: req.body.email };
+
+        var detallesUsuario = await UserService.getUsers(query);
+        console.log(detallesUsuario)
+        // Verificar si el usuario existe
+        if (!detallesUsuario) {
+            return res.status(404).json({ status: 404, message: "Usuario no encontrado" });
         }
 
         await MailService.sendMail(req.body.email);
