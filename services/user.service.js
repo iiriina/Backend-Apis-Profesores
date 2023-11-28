@@ -207,12 +207,15 @@ exports.borrarRefServicioAUsuario = async function (id_servicio, id_usuario) {
 exports.getIdsServiciosDeUsuario = async function (id_usuario) {
     try {
         // Obtiene al usuario y su array de referencias a servicios
+        console.log("Este es el id que llega desde el front", id_usuario);
         const usuario = await User.findById(id_usuario).select('servicios').exec();
         if (!usuario) {
             throw Error("Usuario no encontrado");
         }
 
         // Extrae el array de referencias a servicios del usuario
+        console.log(usuario.servicios);
+
         return usuario.servicios;
     } catch (e) {
         throw Error("Error al obtener los IDs de servicios del usuario: " + e.message);

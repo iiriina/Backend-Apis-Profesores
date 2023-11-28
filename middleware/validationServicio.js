@@ -85,15 +85,14 @@ function validateCambiarVisibilidadServicio(req, res, next) {
     next();
 }
 
-
 function validateGetServiciosDeUsuario(req, res, next) {
-    // Verificar que se proporcionen los campos obligatorios
-    if (!req.body || !req.body.id_usuario) {
-        return res.status(400).json({ status: 400, message: "Se requiere 'id_usuario' en el cuerpo de la solicitud" });
+    // Verificar que se proporcionen los campos obligatorios en la consulta (query parameters)
+    if (!req.query || !req.query.id_usuario) {
+        return res.status(400).json({ status: 400, message: "Se requiere 'id_usuario' como parámetro de consulta" });
     }
 
     // Validar que 'id_usuario' sea una cadena de texto no vacía
-    if (typeof req.body.id_usuario !== 'string' || req.body.id_usuario.trim() === '') {
+    if (typeof req.query.id_usuario !== 'string' || req.query.id_usuario.trim() === '') {
         return res.status(400).json({ status: 400, message: "'id_usuario' debe ser un string no vacío" });
     }
 

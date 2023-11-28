@@ -85,17 +85,18 @@ exports.getServicios = async function (req, res, next) {
 
 //ahora voy a obtener los servicios de un usuario en especifico:
 exports.getServiciosDeUsuario = async function (req, res, next) {
+    let id_usuario = req.query.id_usuario;
 
-    let id_usuario= req.body.id_usuario
     try {
-        var Servicios = await ServicioService.getServiciosPorIds(id_usuario)
-        // Return the Users list with the appropriate HTTP password Code and Message.
-        return res.status(200).json({status: 200, data: Servicios, message: "Succesfully Servicios Recieved"});
+        var Servicios = await ServicioService.getServiciosPorIds(id_usuario);
+        // Devuelve la lista de servicios con el código HTTP y el mensaje apropiado.
+        return res.status(200).json({ status: 200, data: Servicios, message: "Succesfully Servicios Recieved" });
     } catch (e) {
-        //Return an Error Response Message with Code and the Error Message.
-        return res.status(400).json({status: 400, message: e.message});
+        // Devuelve un mensaje de error con el código y el mensaje de error.
+        return res.status(400).json({ status: 400, message: e.message });
     }
 }
+
 
 exports.modificarServicio = async function (req, res, next) {
     try {
