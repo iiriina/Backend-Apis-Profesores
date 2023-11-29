@@ -37,13 +37,13 @@ exports.crearServicio = async function (req, res, next) {
 //en el service se quita la referencia al servicio en el usuario en el array de refservicios
 exports.eliminarServicio = async function (req, res, next) {
 
-    //le tengo que mandar el id del servicio y el id del usuario en el body
-    var id = req.body.id;
-    var id_usuario = req.body.id_usuario;
+    //le tengo que mandar el id del servicio y el id del usuario como params
+    var id = req.query.id;
+    var id_usuario = req.query.id_usuario;
 
     try {
         var deleted = await ServicioService.deleteServicio(id, id_usuario);
-        res.status(200).send("Succesfully Deleted... ");
+        return res.status(200).json({ deleted, message: "Succesfully Deleted Service"})
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message})
     }
@@ -101,10 +101,12 @@ exports.getServiciosDeUsuario = async function (req, res, next) {
 exports.modificarServicio = async function (req, res, next) {
     try {
         let imageUrl;
-
+        console.log(req.file);
         // Verificar si se proporciona una nueva imagen
         if (req.file && req.file.buffer) {
             // Subir la nueva imagen y obtener la URL
+            console.log("la imagen que llega es", req.file.buffer);
+            console.log("hola??");
             imageUrl = await CloudinaryService.uploadImage(req.file.buffer);
         }
 
@@ -128,7 +130,7 @@ exports.modificarServicio = async function (req, res, next) {
 //para que en el front se muestren solo los que fueron aceptados. 
 exports.getServicioPorIdServicio = async function (req, res, next) {
 
-    let id_servicio= req.body.id_servicio
+    let id_servicio = req.query.id_servicio; // Cambiado a req.params para leer el parámetro de la URL
     try {
         var Servicios = await ServicioService.getServicioPorIdServicio(id_servicio)
         // Return the Users list with the appropriate HTTP password Code and Message.

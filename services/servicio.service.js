@@ -139,7 +139,7 @@ exports.modificarServicio = async function (servicio) {
         if (!oldServicio) {
             return false;
         }
-
+        console.log("la url de la imagen nueva es", servicio.imagenUrl);
         // Iterar sobre las propiedades proporcionadas en el cuerpo de la solicitud
         Object.keys(servicio).forEach((prop) => {
             // Verificar si la propiedad existe en el servicio (en lo que me pasa el usuario) y no es "_id", ni undefined, ni null
@@ -147,7 +147,7 @@ exports.modificarServicio = async function (servicio) {
                 oldServicio[prop] = servicio[prop];
             }
         });
-
+        console.log("el nombre que me llega acá es:", servicio.nombre_servicio);
         // Guardar el servicio modificado
         var savedServicio = await oldServicio.save();
         return savedServicio;
