@@ -48,13 +48,13 @@ function validateBorrarComentario(req, res, next) {
 
 function validateMostrarComentariosPendientes(req, res, next) {
     // Verificar que se proporcione el campo obligatorio
-    if (!req.body.id_usuario) {
-        return res.status(400).json({ status: 400, message: "Necesitas enviar el 'id_usuario'" });
+    if (!req.query.id_usuario) {
+        return res.status(400).json({ status: 400, message: "Necesitas enviar el 'id_usuario' en (query params)" });
     }
 
     // Validar que 'id_usuario' sea una cadena de texto no vacía
-    if (typeof req.body.id_usuario !== 'string' || req.body.id_usuario.trim() === '') {
-        return res.status(400).json({ status: 400, message: "'id_usuario' debe ser una cadena de texto no vacía" });
+    if (typeof req.query.id_usuario !== 'string' || req.query.id_usuario.trim() === '') {
+        return res.status(400).json({ status: 400, message: "'id_usuario' debe ser una cadena de texto no vacía en (query params)" });
     }
 
     // Si todas las validaciones pasan, pasar al siguiente middleware o ruta

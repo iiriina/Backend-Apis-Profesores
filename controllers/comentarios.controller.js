@@ -71,8 +71,8 @@ exports.aceptarComentario = async function (req, res, next) {
 //muestra todos los comentarios pendientes de un usuario
 exports.mostrarComentariosPendientes = async function (req, res, next) {
 
-    //le tengo que mandar el id del comentario y el id del servicio en el body
-    var id_usuario = req.body.id_usuario;
+    //le tengo que mandar el id del comentario y el id del servicio en los params
+    var id_usuario = req.query.id_usuario;
 
     try {
         let comentariosPendientes = await ComentarioService.mostrarComentariosPendientes(id_usuario);
