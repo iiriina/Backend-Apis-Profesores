@@ -114,8 +114,8 @@ exports.getServicios = async function (query) {
     try {
         console.log("Query", query);
 
-        // Find servicios based on the query
-        const servicios = await Servicio.find(query);
+        // Find servicios based on the query. si no es publico el servicio no lo muestra
+        const servicios = await Servicio.find({ ...query, visibilidad: 'publico' });
         console.log("los servicios que hay son" + servicios)
         // Return the users
         return servicios;
