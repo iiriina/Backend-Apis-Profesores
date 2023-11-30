@@ -43,12 +43,12 @@ function validateCrearContratacion(req, res, next) {
 
 function validateGetContratacionesPorIdUsuario(req, res, next) {
     // Verificar que se proporciona el campo obligatorio 'id_usuario'
-    if (!req.body.id_usuario) {
+    if (!req.query.id_usuario) {
         return res.status(400).json({ status: 400, message: "Necesitas enviar el id del Usuario para ver las Contrataciones" });
     }
 
     // Validar que 'id_usuario' sea una cadena de texto no vacía
-    if (typeof req.body.id_usuario !== 'string' || req.body.id_usuario.trim() === '') {
+    if (typeof req.query.id_usuario !== 'string' || req.query.id_usuario.trim() === '') {
         return res.status(400).json({ status: 400, message: "'id_usuario' debe ser un string no vacío" });
     }
 

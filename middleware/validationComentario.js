@@ -31,14 +31,14 @@ function validateCrearComentario(req, res, next) {
 
 function validateBorrarComentario(req, res, next) {
     // Verificar que se proporcionen los campos obligatorios
-    if (!req.body.id_comentario || !req.body.id_servicio || !req.body.id_usuario) {
+    if (!req.query.id_comentario || !req.query.id_servicio || !req.query.id_usuario) {
         return res.status(400).json({ status: 400, message: "Todos los campos son obligatorios: 'id_comentario', 'id_servicio', y 'id_usuario'" });
     }
 
     // Validar que 'id_comentario', 'id_servicio' y 'id_usuario' sean cadenas de texto no vacías
-    if (typeof req.body.id_comentario !== 'string' || req.body.id_comentario.trim() === '' ||
-        typeof req.body.id_servicio !== 'string' || req.body.id_servicio.trim() === '' ||
-        typeof req.body.id_usuario !== 'string' || req.body.id_usuario.trim() === '') {
+    if (typeof req.query.id_comentario !== 'string' || req.query.id_comentario.trim() === '' ||
+        typeof req.query.id_servicio !== 'string' || req.query.id_servicio.trim() === '' ||
+        typeof req.query.id_usuario !== 'string' || req.query.id_usuario.trim() === '') {
         return res.status(400).json({ status: 400, message: "'id_comentario', 'id_servicio' y 'id_usuario' deben ser strings no vacíos" });
     }
 

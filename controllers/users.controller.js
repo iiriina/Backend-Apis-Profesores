@@ -92,7 +92,7 @@ exports.crearUsuario = async function (req, res, next) {
         return res.status(201).json({createdUser, message: "Succesfully Created User"})
     } catch (error) {
         if (error.message === 'Correo electrónico ya está en uso') {
-            return res.status(400).json({ status: 400, message: "El correo electrónico ya está en uso" });
+            return res.status(402).json({ status: 402, message: "El correo electrónico ya está en uso" });
         } else {
             console.error(error);
             return res.status(400).json({ status: 400, message: "Error al crear el usuario" });

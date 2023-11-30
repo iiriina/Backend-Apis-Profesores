@@ -37,12 +37,12 @@ exports.crearContratacion = async function (req, res, next) {
 //muestra las contrataciones de un usuario, por id de usuario
 exports.getContratacionesPorIdUsuario = async function (req, res, next) {
     // Id is necessary for the update
-    if (!req.body.id_usuario) {
+    if (!req.query.id_usuario) {
         return res.status(400).json({status: 400, message: "Necesitas enviar el id del Usuario para ver las Contrataciones"})
     }
     
     try {
-        var Contrataciones = await ContratacionService.getContratacionesPorIdUsuario(req.body.id_usuario);
+        var Contrataciones = await ContratacionService.getContratacionesPorIdUsuario(req.query.id_usuario);
         // Return the Users list with the appropriate HTTP password Code and Message.
         return res.status(200).json({status: 200, data: Contrataciones, message: "Succesfully Contrataciones Recieved"});
     } catch (e) {

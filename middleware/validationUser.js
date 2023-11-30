@@ -40,7 +40,7 @@ function validateCreateUser(req, res, next) {
 
     // Validar que el campo 'telefono' sea un número
     if (isNaN(req.body.telefono)) {
-        return res.status(400).json({ status: 400, message: "El campo 'telefono' debe ser un número" });
+        return res.status(401).json({ status: 401, message: "El campo 'telefono' debe ser un número" });
     }
     
     // Si todas las validaciones pasan, pasar al siguiente middleware o ruta
