@@ -10,6 +10,12 @@ function validateCreateUser(req, res, next) {
     if (!req.body.email) {
         return res.status(400).json({ status: 400, message: "El campo 'email' es obligatorio" });
     }
+    
+    // Validar el formato del correo electrónico usando una expresión regular
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(req.body.email)) {
+        return res.status(400).json({ status: 400, message: "El formato del correo electrónico no es válido" });
+    }
 
     if (!req.body.contrasenia) {
         return res.status(400).json({ status: 400, message: "El campo 'contrasenia' es obligatorio" });

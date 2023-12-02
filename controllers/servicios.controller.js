@@ -18,6 +18,10 @@ exports.crearServicio = async function (req, res, next) {
         console.log(req.body.imagen);  
         console.log("que se manda:", req.body);  
         console.log("que se manda:", req.file);  
+        if (isNaN(req.body.precio)) {
+            return res.status(400).json({ status: 400, message: `El campo precio debe ser un número válido` });
+        }
+    
         /*
         const response = await cloudinary.uploader.upload(fileString, {upload_preset: 'imagenes'});
         console.log(response);
